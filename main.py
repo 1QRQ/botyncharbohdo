@@ -21,9 +21,9 @@ def create_message():
     grid = generate_grid()
     return (
         "✅ تأكيد الدخول!\n\n"
-        "💣 القنابل: 3\n"
+        "✖️ الفخاخ: 3\n"
         "🎯 المحاولات: 3\n\n"
-        "🎮 اضغط هنا وابدأ اللعب!\n\n"
+        "🎮 [اضغط هنا وابدأ اللعب!](https://cutt.ly/1win_registration)\n\n"
         f"{grid}\n\n"
         "🔍 تابع الشرح لمزيد من التفاصيل"
     )
@@ -34,7 +34,11 @@ def send_loop():
         # إرسال المنشور
         msg = create_message()
         msg_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-        msg_data = {"chat_id": CHANNEL_ID, "text": msg}
+        msg_data = {
+            "chat_id": CHANNEL_ID,
+            "text": msg,
+            "parse_mode": "Markdown"  # ضروري لتفعيل الرابط داخل النص
+        }
         requests.post(msg_url, data=msg_data)
         print("✅ تم نشر الرسالة.")
 
