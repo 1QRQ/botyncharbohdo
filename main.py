@@ -24,7 +24,7 @@ def create_message():
     grid = generate_grid()
     return (
         "✅ تأكيد الدخول!\n\n"
-        "✖️ الفخاخ: 3\n"
+        " الفخاخ: 3 ✖️\n"
         "🎯 المحاولات: 3\n\n"
         "🎮 [ابدأ من هنا](https://cutt.ly/1win_registration)\n\n"
         f"{grid}\n\n"
