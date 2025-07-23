@@ -23,9 +23,9 @@ def create_message():
         "✅ تأكيد الدخول!\n\n"
         "✖️ الفخاخ: 3\n"
         "🎯 المحاولات: 3\n\n"
-        "🎮 [ابدأ من هنا ](https://cutt.ly/1win_registration)\n\n"
+        "🎮 [ابدأ من هنا](https://cutt.ly/1win_registration)\n\n"
         f"{grid}\n\n"
-        " [لتواصل ](https://t.me/Faridsupp1)\n\n"
+        "[لتواصل](https://t.me/Faridsupp1)\n\n"
     )
 
 # إرسال الرسائل والستيكرات بدورة زمنية
@@ -38,6 +38,7 @@ def send_loop():
             "chat_id": CHANNEL_ID,
             "text": msg,
             "parse_mode": "Markdown",
+            "disable_web_page_preview": True,
             "reply_markup": {
                 "inline_keyboard": [
                     [{"text": "👈🏻 افتح اللعبة 👉🏻", "url": "https://1win.com.ci/v3/2158/1win-mines?p=kquw"}]
