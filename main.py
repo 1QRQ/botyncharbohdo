@@ -4,8 +4,8 @@ from flask import Flask
 from threading import Thread
 import random
 
-TOKEN = 'توكن البوت هنا'
-CHANNEL_ID = '@اسم_القناة'
+TOKEN = '8038736203:AAECtnHYlibz6V5AtvdnjdVaebGsx-UV_eU'
+CHANNEL_ID = '@gowinst'
 
 def generate_grid(rows=5, cols=5, stars=5):
     grid = [['🟦' for _ in range(cols)] for _ in range(rows)]
