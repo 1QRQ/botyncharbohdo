@@ -12,7 +12,7 @@ CHANNEL_ID = '@gowinst'
 def generate_grid(rows=5, cols=5, stars=4):
     grid = [['🟦' for _ in range(cols)] for _ in range(rows)]
     positions = random.sample([(r, c) for r in range(rows) for c in range(cols)], stars)
-    for r, c in positions:
+    for r, c in positions: 
         grid[r][c] = '⭐️'
     return '\n'.join([''.join(row) for row in grid])
 
@@ -25,7 +25,7 @@ def create_message():
         "🎯 المحاولات: 3\n\n"
         "🎮 [اضغط هنا وابدأ اللعب!](https://cutt.ly/1win_registration)\n\n"
         f"{grid}\n\n"
-        "🔍 تابع الشرح لمزيد من التفاصيل"
+        " [لتواصل ](https://t.me/Faridsupp1)\n\n"
     )
 
 # إرسال الرسائل والستيكرات بدورة زمنية
@@ -40,7 +40,7 @@ def send_loop():
             "parse_mode": "Markdown",
             "reply_markup": {
                 "inline_keyboard": [
-                    [{"text": "🎮 العب الآن", "url": "https://cutt.ly/1win_registration"}]
+                    [{"text": "👉🏻 افتح اللعبة 👈🏻", "url": "https://cutt.ly/1win_registration"}]
                 ]
             }
         }
