@@ -4,7 +4,7 @@ from flask import Flask
 from threading import Thread
 import random
 
-TOKEN = '8038736203:AAECtnHYlibz6V5AtvdnjdVaebGsx-UV_eU'
+TOKEN = '7959797318:AAFIZreFesOIa-BRrES5W3ZvL6Z-freBUoE'
 CHANNEL_ID = '@gowinst'
 
 def generate_grid(rows=5, cols=5, stars=5):
