@@ -9,7 +9,7 @@ TOKEN = '7959797318:AAFIZreFesOIa-BRrES5W3ZvL6Z-freBUoE'
 CHANNEL_ID = '@gowinst'
 
 # إنشاء شبكة النجوم
-def generate_grid(rows=5, cols=5, stars=5):
+def generate_grid(rows=5, cols=5, stars=4):
     grid = [['🟦' for _ in range(cols)] for _ in range(rows)]
     positions = random.sample([(r, c) for r in range(rows) for c in range(cols)], stars)
     for r, c in positions:
