@@ -57,8 +57,8 @@ def send_loop():
         requests.post(msg_url, data=notice_data)
         print("⏱️ تم إرسال إشعار الجولة.")
 
-        # انتظار 115 ثانية لاستكمال الدقيقتين
-        time.sleep(115)
+        # انتظار 3 دقائق و 5 ثواني بعد رسالة الإشعار
+        time.sleep(185)
 
         # إرسال الستيكر
         sticker_id = "CAACAgIAAxkBAAEPAAFQaIA6Ps2XYKQimobPYq1DjExfNbsAAoAnAAKcNlhLRE8QLYjGSRw2BA"
