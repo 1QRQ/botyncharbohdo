@@ -7,8 +7,6 @@ import random
 # بيانات البوت
 TOKEN = '7959797318:AAFIZreFesOIa-BRrES5W3ZvL6Z-freBUoE'
 CHANNEL_ID = '@gowinst'
-
-# إعدادات الصورة
 PHOTO_FILE_ID = 'AgACAgQAAxkBAAMEaIFCOUAEMlyckKZq-CkMe014bm0AAozLMRuV1AlQmz1UmiG_RBIBAAMCAANzAAM2BA'
 
 # إنشاء شبكة النجوم
@@ -24,19 +22,30 @@ def create_message():
     grid = generate_grid()
     return (
         "✅ تأكيد الدخول!\n\n"
-        " الفخاخ: 3 ✖️\n"
+        "✖️ الفخاخ: 3\n"
         "🎯 المحاولات: 3\n\n"
-        "🎮 [ابدأ من هنا](https://cutt.ly/1win_registration)\n\n"
+        "🎮 [ابدأ من هنا ](https://cutt.ly/1win_registration)\n\n"
         f"{grid}\n\n"
-        "[لتواصل](https://t.me/Faridsupp1)\n\n"
+        " [لتواصل ](https://t.me/Faridsupp1)\n\n"
     )
 
-# إرسال الرسائل والستيكرات والصور بدورة زمنية
+# إرسال الرسائل بدورة زمنية
 def send_loop():
     last_photo_time = time.time()
 
     while True:
-        # إرسال المنشور الرئيسي
+        # رسالة التمهيد قبل المنشور بـ 5 ثواني
+        pre_msg = "*🚨 _جاري ربط خوارزميات موقع 1وين بالقناة_*"
+        pre_data = {
+            "chat_id": CHANNEL_ID,
+            "text": pre_msg,
+            "parse_mode": "Markdown"
+        }
+        requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", data=pre_data)
+        print("⏳ تم إرسال رسالة التمهيد.")
+        time.sleep(5)
+
+        # المنشور الرئيسي
         msg = create_message()
         msg_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
         msg_data = {
@@ -70,7 +79,7 @@ def send_loop():
         requests.post(sticker_url, data=sticker_data)
         print("📎 تم إرسال الستيكر.")
 
-        # كل 25 دقيقة: إرسال الصورة
+        # إرسال الصورة كل 25 دقيقة
         if time.time() - last_photo_time >= 1500:
             photo_url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
             photo_data = {
@@ -82,10 +91,10 @@ def send_loop():
             last_photo_time = time.time()
             print("🖼️ تم إرسال الصورة.")
 
-        # انتظار 5 ثواني قبل الدورة التالية
+        # انتظار 5 ثواني قبل تكرار الدورة
         time.sleep(5)
 
-# إبقاء البوت شغال
+# إبقاء البوت شغال في Railway
 app = Flask('')
 
 @app.route('/')
