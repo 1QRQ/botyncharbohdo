@@ -23,7 +23,7 @@ def create_message():
         "✅ تأكيد الدخول!\n\n"
         "✖️ الفخاخ: 3\n"
         "🎯 المحاولات: 3\n\n"
-        "🎮 [اضغط هنا وابدأ اللعب!](https://cutt.ly/1win_registration)\n\n"
+        "🎮 [اضغط هنا وابدأ اللعب!](xxxxxxxxxx)\n\n"
         f"{grid}\n\n"
         " [لتواصل ](https://t.me/Faridsupp1)\n\n"
     )
@@ -40,7 +40,7 @@ def send_loop():
             "parse_mode": "Markdown",
             "reply_markup": {
                 "inline_keyboard": [
-                    [{"text": "👉🏻 افتح اللعبة 👈🏻", "url": "https://cutt.ly/1win_registration"}]
+                    [{"text": "👈🏻 افتح اللعبة 👉🏻", "url": "https://cutt.ly/1win_registration"}]
                 ]
             }
         }
