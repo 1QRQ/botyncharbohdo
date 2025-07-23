@@ -31,16 +31,21 @@ def create_message():
 # إرسال الرسائل والستيكرات بدورة زمنية
 def send_loop():
     while True:
-        # إرسال المنشور
+        # إرسال المنشور مع زر
         msg = create_message()
         msg_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
         msg_data = {
             "chat_id": CHANNEL_ID,
             "text": msg,
-            "parse_mode": "Markdown"  # ضروري لتفعيل الرابط داخل النص
+            "parse_mode": "Markdown",
+            "reply_markup": {
+                "inline_keyboard": [
+                    [{"text": "🎮 العب الآن", "url": "https://cutt.ly/1win_registration"}]
+                ]
+            }
         }
-        requests.post(msg_url, data=msg_data)
-        print("✅ تم نشر الرسالة.")
+        requests.post(msg_url, json=msg_data)
+        print("✅ تم نشر الرسالة مع الزر.")
 
         # انتظار دقيقتين
         time.sleep(120)
@@ -52,7 +57,7 @@ def send_loop():
         requests.post(sticker_url, data=sticker_data)
         print("📎 تم إرسال الستيكر.")
 
-        # انتظار 3 دقائق إضافية (مجموع الدورة = 5 دقائق)
+        # انتظار 3 دقائق إضافية
         time.sleep(180)
 
 # إبقاء البوت شغال في Railway
