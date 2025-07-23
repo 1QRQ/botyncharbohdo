@@ -36,13 +36,14 @@ def send_loop():
     last_photo_time = time.time()
 
     while True:
-        # إرسال المنشور
+        # إرسال المنشور الرئيسي
         msg = create_message()
         msg_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
         msg_data = {
             "chat_id": CHANNEL_ID,
             "text": msg,
             "parse_mode": "Markdown",
+            "disable_web_page_preview": True,
             "reply_markup": {
                 "inline_keyboard": [
                     [{"text": "👈🏻 افتح اللعبة 👉🏻", "url": "https://1win.com.ci/v3/2158/1win-mines?p=kquw"}]
@@ -52,15 +53,14 @@ def send_loop():
         requests.post(msg_url, json=msg_data)
         print("✅ تم نشر الرسالة مع الزر.")
 
-        # بعد 5 ثواني: إرسال رسالة الجولة
+        # بعد 5 ثواني: رسالة العد التنازلي
         time.sleep(5)
-        message_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-        message_data = {
+        countdown_data = {
             "chat_id": CHANNEL_ID,
             "text": "⏳ 3 دقائق لتنتهي الجولة ... ✅"
         }
-        requests.post(message_url, data=message_data)
-        print("📩 تم إرسال رسالة العد التنازلي.")
+        requests.post(msg_url, data=countdown_data)
+        print("📩 تم إرسال العد التنازلي.")
 
         # بعد 3 دقائق: إرسال الستيكر
         time.sleep(180)
@@ -70,8 +70,8 @@ def send_loop():
         requests.post(sticker_url, data=sticker_data)
         print("📎 تم إرسال الستيكر.")
 
-        # إرسال صورة كل دقيقة (للجرب فقط)
-        if time.time() - last_photo_time >= 60:
+        # كل 25 دقيقة: إرسال الصورة
+        if time.time() - last_photo_time >= 1500:
             photo_url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
             photo_data = {
                 "chat_id": CHANNEL_ID,
@@ -82,10 +82,10 @@ def send_loop():
             last_photo_time = time.time()
             print("🖼️ تم إرسال الصورة.")
 
-        # تكملة الوقت المتبقي (مثلاً 5 ثواني)
+        # انتظار 5 ثواني قبل الدورة التالية
         time.sleep(5)
 
-# إبقاء البوت شغال في Railway
+# إبقاء البوت شغال
 app = Flask('')
 
 @app.route('/')
