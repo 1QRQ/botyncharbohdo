@@ -28,7 +28,7 @@ def create_message():
     grid = generate_grid()
     return (
         "✅ تأكيد الدخول!\n\n"
-        "✖️ الفخاخ: 3\n"
+        " الفخاخ: 3 ✖️\n"
         "🎯 المحاولات: 3\n\n"
         "🎮 [ابدأ من هنا](https://cutt.ly/1win_registration)\n\n"
         f"{grid}\n\n"
@@ -65,7 +65,7 @@ def send_loop():
 
     while True:
         send_text("🚨 _جاري ربط خوارزميات موقع 1وين بالقناة_", parse_mode="Markdown")
-        time.sleep(25)
+        time.sleep(5)
 
         # نشر الرسالة الرئيسية
         msg = create_message()
