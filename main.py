@@ -7,7 +7,13 @@ import random
 # بيانات البوت
 TOKEN = '7959797318:AAFIZreFesOIa-BRrES5W3ZvL6Z-freBUoE'
 CHANNEL_ID = '@gowinst'
-PHOTO_FILE_ID = 'AgACAgQAAxkBAAMEaIFCOUAEMlyckKZq-CkMe014bm0AAozLMRuV1AlQmz1UmiG_RBIBAAMCAANzAAM2BA'
+
+# File IDs
+STICKERS = [
+    "CAACAgIAAxkBAAEPAAFQaIA6Ps2XYKQimobPYq1DjExfNbsAAoAnAAKcNlhLRE8QLYjGSRw2BA",
+    "CAACAgIAAxkBAAEO4Gxoa_iXoX8T5Ymf3SwP6x2KQefJIAACAwEAAladvQoC5dF4h-X6TzYE"
+]
+IMAGE_ID = "AgACAgQAAxkBAAMEaIFCOUAEMlyckKZq-CkMe014bm0AAozLMRuV1AlQmz1UmiG_RBIBAAMCAANzAAM2BA"
 
 # إنشاء شبكة النجوم
 def generate_grid(rows=5, cols=5, stars=4):
@@ -24,75 +30,73 @@ def create_message():
         "✅ تأكيد الدخول!\n\n"
         "✖️ الفخاخ: 3\n"
         "🎯 المحاولات: 3\n\n"
-        "🎮 [ابدأ من هنا ](https://cutt.ly/1win_registration)\n\n"
+        "🎮 [ابدأ من هنا](https://cutt.ly/1win_registration)\n\n"
         f"{grid}\n\n"
-        " [لتواصل ](https://t.me/Faridsupp1)\n\n"
+        "[لتواصل](https://t.me/Faridsupp1)"
     )
 
-# إرسال الرسائل بدورة زمنية
+# إرسال الرسائل
+def send_text(text, parse_mode="Markdown", reply_markup=None):
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    data = {
+        "chat_id": CHANNEL_ID,
+        "text": text,
+        "parse_mode": parse_mode,
+        "disable_web_page_preview": True
+    }
+    if reply_markup:
+        data["reply_markup"] = reply_markup
+    requests.post(url, json=data)
+
+def send_sticker(sticker_id):
+    url = f"https://api.telegram.org/bot{TOKEN}/sendSticker"
+    data = {"chat_id": CHANNEL_ID, "sticker": sticker_id}
+    requests.post(url, data=data)
+
+def send_photo(photo_id):
+    url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
+    data = {"chat_id": CHANNEL_ID, "photo": photo_id}
+    requests.post(url, data=data)
+
+# الدور الرئيسي
 def send_loop():
-    last_photo_time = time.time()
+    sticker_index = 0
+    last_image_time = time.time()
 
     while True:
-        # رسالة التمهيد قبل المنشور بـ 5 ثواني
-        pre_msg = "*🚨جاري ربط خوارزميات موقع 1وين بالقناة ... 🚨*"
-        pre_data = {
-            "chat_id": CHANNEL_ID,
-            "text": pre_msg,
-            "parse_mode": "Markdown"
-        }
-        requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", data=pre_data)
-        print("⏳ تم إرسال رسالة التمهيد.")
+        send_text("🚨 _جاري ربط خوارزميات موقع 1وين بالقناة_", parse_mode="Markdown")
         time.sleep(5)
 
-        # المنشور الرئيسي
+        # نشر الرسالة الرئيسية
         msg = create_message()
-        msg_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-        msg_data = {
-            "chat_id": CHANNEL_ID,
-            "text": msg,
-            "parse_mode": "Markdown",
-            "disable_web_page_preview": True,
-            "reply_markup": {
+        send_text(
+            msg,
+            reply_markup={
                 "inline_keyboard": [
                     [{"text": "👈🏻 افتح اللعبة 👉🏻", "url": "https://1win.com.ci/v3/2158/1win-mines?p=kquw"}]
                 ]
             }
-        }
-        requests.post(msg_url, json=msg_data)
-        print("✅ تم نشر الرسالة مع الزر.")
+        )
+        print("✅ تم نشر الرسالة.")
 
-        # بعد 5 ثواني: رسالة العد التنازلي
         time.sleep(5)
-        countdown_data = {
-            "chat_id": CHANNEL_ID,
-            "text": "⏳ 3 دقائق لتنتهي الجولة ... ✅"
-        }
-        requests.post(msg_url, data=countdown_data)
-        print("📩 تم إرسال العد التنازلي.")
 
-        # بعد 3 دقائق: إرسال الستيكر
-        time.sleep(180)
-        sticker_id = "CAACAgIAAxkBAAEPAAFQaIA6Ps2XYKQimobPYq1DjExfNbsAAoAnAAKcNlhLRE8QLYjGSRw2BA"
-        sticker_url = f"https://api.telegram.org/bot{TOKEN}/sendSticker"
-        sticker_data = {"chat_id": CHANNEL_ID, "sticker": sticker_id}
-        requests.post(sticker_url, data=sticker_data)
-        print("📎 تم إرسال الستيكر.")
+        # نشر رسالة العد التنازلي
+        send_text("3 دقائق لتنتهي الجولة ... ✅")
+        print("⌛ تم نشر رسالة العد التنازلي.")
 
-        # إرسال الصورة كل 25 دقيقة
-        if time.time() - last_photo_time >= 1500:
-            photo_url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
-            photo_data = {
-                "chat_id": CHANNEL_ID,
-                "photo": PHOTO_FILE_ID,
-                "caption": "📸 العرض الخاص بين يديك!"
-            }
-            requests.post(photo_url, data=photo_data)
-            last_photo_time = time.time()
-            print("🖼️ تم إرسال الصورة.")
+        time.sleep(185)  # 3 دقائق و5 ثواني
 
-        # انتظار 5 ثواني قبل تكرار الدورة
-        time.sleep(5)
+        # إرسال ستيكر بالتناوب
+        send_sticker(STICKERS[sticker_index])
+        sticker_index = (sticker_index + 1) % len(STICKERS)
+        print("📎 تم إرسال ستيكر.")
+
+        # إرسال صورة كل 25 دقيقة
+        if time.time() - last_image_time >= 1500:
+            send_photo(IMAGE_ID)
+            last_image_time = time.time()
+            print("🖼️ تم إرسال صورة.")
 
 # إبقاء البوت شغال في Railway
 app = Flask('')
