@@ -65,7 +65,7 @@ def send_loop():
 
     while True:
         send_text("🚨 _جاري ربط خوارزميات موقع 1وين بالقناة_", parse_mode="Markdown")
-        time.sleep(5)
+        time.sleep(25)
 
         # نشر الرسالة الرئيسية
         msg = create_message()
