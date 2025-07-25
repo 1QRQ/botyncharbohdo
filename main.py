@@ -30,7 +30,7 @@ def create_message():
         "✅ تأكيد الدخول!\n\n"
         " الفخاخ: 3 ✖️\n"
         "🎯 المحاولات: 3\n\n"
-        "🎮 [ابدأ من هنا](https://cutt.ly/1win_registration)\n\n"
+        "🎮 [ابدأ من هنا](https://1win.com.ci/v3/2158/1win-mines?p=kquw)\n\n"
         f"{grid}\n\n"
         "[لتواصل](https://t.me/Faridsupp1)"
     )
@@ -73,7 +73,7 @@ def send_loop():
             msg,
             reply_markup={
                 "inline_keyboard": [
-                    [{"text": "👈🏻 افتح اللعبة 👉🏻", "url": "https://1win.com.ci/v3/2158/1win-mines?p=kquw"}]
+                    [{"text": "👈🏻 افتح اللعبة 👉🏻", "url": "https://1win.com.ci/casino/play/v_1winGames:Mines_classic?p=kquw"}]
                 ]
             }
         )
