@@ -13,18 +13,10 @@ STICKERS = [
     "CAACAgIAAxkBAAEPAAFQaIA6Ps2XYKQimobPYq1DjExfNbsAAoAnAAKcNlhLRE8QLYjGSRw2BA",
     "CAACAgIAAxkBAAEO4Gxoa_iXoX8T5Ymf3SwP6x2KQefJIAACAwEAAladvQoC5dF4h-X6TzYE"
 ]
-IMAGE_ID_2 = "AgACAgQAAxkBAAMSaJIpOwrUxroY_wWcwYIMp5lQhxAAAkrSMRuVKZBQ1CuoXrEclgABAQADAgADeQADNgQ"  # كل 7 دقائق
-IMAGE_ID_3 = "AgACAgQAAxkBAAM4aJsoNnj8a9JUmD3P5eYQmciUBNYAAv7IMRvNb9hQ4ZG2VZzfKlkBAAMCAAN5AAM2BA"  # كل 10 دقائق
-TEXT_IMAGE_3 = (
-    "تذكير 🔴🔴\n\n"
-    "اعيد و اكرر بنسبة لناس لبغات تشحن حسابها او تسحب ارباحها بدون انتظار لوقت طويل و بدون مشاكل..\n"
-    "كنصحكوم اخوتي بهاد 2 طرق شحن! زر الواتساب و زر تيليغرام راه كينين في طرق الشحن في الموقع الرسمي\n"
-    "راه موثوقين من المنصة 1win ✅©️، يكفيك انك تواصل معاهوم و هوما غدي ايجاوبوك فلبلآآآآآآآآص\n"
-    "راه عندهوم جميع طرق شحن ، البنوك و الوكالات المغربية.. وحتى العالمية ......\n"
-    "و داكشي لناس لكتبغي لمعقول و سرعة في الشحن و سحب 🫡🫡"
-)
+IMAGE_ID = "AgACAgQAAxkBAAMEaIFCOUAEMlyckKZq-CkMe014bm0AAozLMRuV1AlQmz1UmiG_RBIBAAMCAANzAAM2BA"
+IMAGE_ID_2 = "AgACAgQAAxkBAAMSaJIpOwrUxroY_wWcwYIMp5lQhxAAAkrSMRuVKZBQ1CuoXrEclgABAQADAgADeQADNgQ"
 
-# شبكة النجوم
+# إنشاء شبكة النجوم
 def generate_grid(rows=5, cols=5, stars=4):
     grid = [['🟦' for _ in range(cols)] for _ in range(rows)]
     positions = random.sample([(r, c) for r in range(rows) for c in range(cols)], stars)
@@ -32,7 +24,7 @@ def generate_grid(rows=5, cols=5, stars=4):
         grid[r][c] = '⭐️'
     return '\n'.join([''.join(row) for row in grid])
 
-# الرسالة الرئيسية
+# توليد الرسالة
 def create_message():
     grid = generate_grid()
     return (
@@ -44,8 +36,7 @@ def create_message():
         "[📩 لتواصل](https://t.me/Faridsupp1)"
     )
 
-# إرسال المحتوى
-
+# إرسال الرسائل
 def send_text(text, parse_mode="Markdown", reply_markup=None):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     data = {
@@ -58,33 +49,27 @@ def send_text(text, parse_mode="Markdown", reply_markup=None):
         data["reply_markup"] = reply_markup
     requests.post(url, json=data)
 
-
 def send_sticker(sticker_id):
     url = f"https://api.telegram.org/bot{TOKEN}/sendSticker"
     data = {"chat_id": CHANNEL_ID, "sticker": sticker_id}
     requests.post(url, data=data)
 
-
-def send_photo(photo_id, caption=None):
+def send_photo(photo_id):
     url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
     data = {"chat_id": CHANNEL_ID, "photo": photo_id}
-    if caption:
-        data["caption"] = caption
     requests.post(url, data=data)
 
-
-# الحلقة الرئيسية
-
+# الدور الرئيسي
 def send_loop():
     sticker_index = 0
+    last_image_time = time.time()
     last_image2_time = time.time()
-    last_image3_time = time.time()
 
     while True:
         send_text("🚨 _جاري ربط خوارزميات موقع 1وين بالقناة_", parse_mode="Markdown")
         time.sleep(5)
 
-        # نشر الرسالة الرئيسية بعد تأخير بسيط
+        # نشر الرسالة الرئيسية
         msg = create_message()
         send_text(
             msg,
@@ -98,32 +83,30 @@ def send_loop():
 
         time.sleep(5)
 
-        # رسالة العد التنازلي
+        # نشر رسالة العد التنازلي
         send_text("3 دقائق لتنتهي الجولة ... ✅")
         print("⌛ تم نشر رسالة العد التنازلي.")
 
         time.sleep(185)  # 3 دقائق و5 ثواني
 
-        # ستيكر
+        # إرسال ستيكر بالتناوب
         send_sticker(STICKERS[sticker_index])
         sticker_index = (sticker_index + 1) % len(STICKERS)
         print("📎 تم إرسال ستيكر.")
 
-        now = time.time()
+        # إرسال الصورة الأولى كل 25 دقيقة (1500 ثانية)
+        if time.time() - last_image_time >= 1500:
+            send_photo(IMAGE_ID)
+            last_image_time = time.time()
+            print("🖼️ تم إرسال صورة.")
 
-        # صورة كل 7 دقائق
-        if now - last_image2_time >= 420:
+        # إرسال الصورة الثانية كل 7 دقائق (420 ثانية)
+        if time.time() - last_image2_time >= 420:
             send_photo(IMAGE_ID_2)
-            last_image2_time = now
-            print("🖼️ تم إرسال الصورة 2.")
+            last_image2_time = time.time()
+            print("🖼️ تم إرسال الصورة الثانية.")
 
-        # صورة كل 10 دقائق
-        if now - last_image3_time >= 600:
-            send_photo(IMAGE_ID_3, caption=TEXT_IMAGE_3)
-            last_image3_time = now
-            print("🖼️ تم إرسال الصورة 3 مع النص.")
-
-# تشغيل الخادم والبوت
+# إبقاء البوت شغال في Railway
 app = Flask('')
 
 @app.route('/')
@@ -136,5 +119,6 @@ def run():
 def keep_alive():
     Thread(target=run).start()
 
+# تشغيل الخادم والبوت
 keep_alive()
 send_loop()
