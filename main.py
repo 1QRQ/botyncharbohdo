@@ -15,6 +15,9 @@ STICKERS = [
 ]
 IMAGE_ID = "AgACAgQAAxkBAAMEaIFCOUAEMlyckKZq-CkMe014bm0AAozLMRuV1AlQmz1UmiG_RBIBAAMCAANzAAM2BA"
 IMAGE_ID_2 = "AgACAgQAAxkBAAMSaJIpOwrUxroY_wWcwYIMp5lQhxAAAkrSMRuVKZBQ1CuoXrEclgABAQADAgADeQADNgQ"
+IMAGE_ID_3 = "AgACAgQAAxkBAAM4aJsoNnj8a9JUmD3P5eYQmciUBNYAAv7IMRvNb9hQ4ZG2VZzfKlkBAAMCAAN5AAM2BA"
+
+IMAGE_3_TEXT = """تذكير 🔴🔴\n\nاعيد و اكرر بنسبة لناس لبغات تشحن حسابها او تسحب ارباحها بدون انتظار لوقت طويل و بدون مشاكل..\n\nكنصحكوم اخوتي بهاد 2 طرق شحن! زر الواتساب و زر تيليغرام راه كينين في طرق الشحن في الموقع الرسمي راه موثوقين من المنصة 1win ✅©️، يكفيك انك تواصل معاهوم و هوما غدي ايجاوبوك فلبلآآآآآآآآص\n\nراه عندهوم جميع طرق شحن ، البنوك و الوكالات المغربية.. وحتى العالمية ......\n\nو داكشي لناس لكتبغي لمعقول و سرعة في الشحن و سحب 🫡🫡"""
 
 # إنشاء شبكة النجوم
 def generate_grid(rows=5, cols=5, stars=4):
@@ -54,9 +57,11 @@ def send_sticker(sticker_id):
     data = {"chat_id": CHANNEL_ID, "sticker": sticker_id}
     requests.post(url, data=data)
 
-def send_photo(photo_id):
+def send_photo(photo_id, caption=None):
     url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
     data = {"chat_id": CHANNEL_ID, "photo": photo_id}
+    if caption:
+        data["caption"] = caption
     requests.post(url, data=data)
 
 # الدور الرئيسي
@@ -64,6 +69,7 @@ def send_loop():
     sticker_index = 0
     last_image_time = time.time()
     last_image2_time = time.time()
+    last_image3_time = time.time()
 
     while True:
         send_text("🚨 _جاري ربط خوارزميات موقع 1وين بالقناة_", parse_mode="Markdown")
@@ -106,6 +112,12 @@ def send_loop():
             last_image2_time = time.time()
             print("🖼️ تم إرسال الصورة الثانية.")
 
+        # إرسال الصورة الثالثة كل 7 دقائق (420 ثانية)
+        if time.time() - last_image3_time >= 420:
+            send_photo(IMAGE_ID_3, caption=IMAGE_3_TEXT)
+            last_image3_time = time.time()
+            print("🖼️ تم إرسال الصورة الثالثة مع النص.")
+
 # إبقاء البوت شغال في Railway
 app = Flask('')
 
@@ -122,4 +134,3 @@ def keep_alive():
 # تشغيل الخادم والبوت
 keep_alive()
 send_loop()
-
