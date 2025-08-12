@@ -13,8 +13,9 @@ STICKERS = [
     "CAACAgIAAxkBAAEPAAFQaIA6Ps2XYKQimobPYq1DjExfNbsAAoAnAAKcNlhLRE8QLYjGSRw2BA",
     "CAACAgIAAxkBAAEO4Gxoa_iXoX8T5Ymf3SwP6x2KQefJIAACAwEAAladvQoC5dF4h-X6TzYE"
 ]
-IMAGE_ID = "AgACAgQAAxkBAAMEaIFCOUAEMlyckKZq-CkMe014bm0AAozLMRuV1AlQmz1UmiG_RBIBAAMCAANzAAM2BA"
-IMAGE_ID_2 = "AgACAgQAAxkBAAMSaJIpOwrUxroY_wWcwYIMp5lQhxAAAkrSMRuVKZBQ1CuoXrEclgABAQADAgADeQADNgQ"
+IMAGE_ID = "AgACAgQAAxkBAAMEaIFCOUAEMlyckKZq-CkMe014bm0AAozLMRuV1AlQmz1UmiG_RBIBAAMCAANzAAM2BA"  # الصورة الأولى
+IMAGE_ID_2 = "AgACAgQAAxkBAAMSaJIpOwrUxroY_wWcwYIMp5lQhxAAAkrSMRuVKZBQ1CuoXrEclgABAQADAgADeQADNgQ"  # الصورة الثانية
+IMAGE_ID_3 = "AgACAgQAAxkBAAM4aJsoNnj8a9JUmD3P5eYQmciUBNYAAv7IMRvNb9hQ4ZG2VZzfKlkBAAMCAAN5AAM2BA"  # الصورة الثالثة بدون نص
 
 # إنشاء شبكة النجوم
 def generate_grid(rows=5, cols=5, stars=4):
@@ -64,6 +65,7 @@ def send_loop():
     sticker_index = 0
     last_image_time = time.time()
     last_image2_time = time.time()
+    last_image3_time = time.time()
 
     while True:
         send_text("🚨 _جاري ربط خوارزميات موقع 1وين بالقناة_", parse_mode="Markdown")
@@ -94,16 +96,24 @@ def send_loop():
         sticker_index = (sticker_index + 1) % len(STICKERS)
         print("📎 تم إرسال ستيكر.")
 
-        # إرسال الصورة الأولى كل 25 دقيقة (1500 ثانية)
-        if time.time() - last_image_time >= 1500:
-            send_photo(IMAGE_ID)
-            last_image_time = time.time()
-            print("🖼️ تم إرسال صورة.")
+        now = time.time()
 
-        # إرسال الصورة الثانية كل 7 دقائق (420 ثانية)
-        if time.time() - last_image2_time >= 420:
+        # إرسال الصورة الأولى كل 25 دقيقة (1500 ثانية)
+        if now - last_image_time >= 1500:
+            send_photo(IMAGE_ID)
+            last_image_time = now
+            print("🖼️ تم إرسال الصورة الأولى.")
+
+        # إرسال الصورة الثالثة كل 6 دقائق (360 ثانية) بدون نص
+        if now - last_image3_time >= 360:
+            send_photo(IMAGE_ID_3)
+            last_image3_time = now
+            print("🖼️ تم إرسال الصورة الثالثة بدون نص.")
+
+        # إرسال الصورة الثانية كل 10 دقائق (600 ثانية)
+        if now - last_image2_time >= 600:
             send_photo(IMAGE_ID_2)
-            last_image2_time = time.time()
+            last_image2_time = now
             print("🖼️ تم إرسال الصورة الثانية.")
 
 # إبقاء البوت شغال في Railway
