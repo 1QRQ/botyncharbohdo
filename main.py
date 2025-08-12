@@ -13,11 +13,13 @@ STICKERS = [
     "CAACAgIAAxkBAAEPAAFQaIA6Ps2XYKQimobPYq1DjExfNbsAAoAnAAKcNlhLRE8QLYjGSRw2BA",
     "CAACAgIAAxkBAAEO4Gxoa_iXoX8T5Ymf3SwP6x2KQefJIAACAwEAAladvQoC5dF4h-X6TzYE"
 ]
-IMAGE_ID = "AgACAgQAAxkBAAMEaIFCOUAEMlyckKZq-CkMe014bm0AAozLMRuV1AlQmz1UmiG_RBIBAAMCAANzAAM2BA"  # الصورة الأولى
-IMAGE_ID_2 = "AgACAgQAAxkBAAMSaJIpOwrUxroY_wWcwYIMp5lQhxAAAkrSMRuVKZBQ1CuoXrEclgABAQADAgADeQADNgQ"  # الصورة الثانية
-IMAGE_ID_3 = "AgACAgQAAxkBAAM4aJsoNnj8a9JUmD3P5eYQmciUBNYAAv7IMRvNb9hQ4ZG2VZzfKlkBAAMCAAN5AAM2BA"  # الصورة الثالثة بدون نص
+IMAGE_ID = "AgACAgQAAxkBAAMEaIFCOUAEMlyckKZq-CkMe014bm0AAozLMRuV1AlQmz1UmiG_RBIBAAMCAANzAAM2BA"
+IMAGE_ID_2 = "AgACAgQAAxkBAAMSaJIpOwrUxroY_wWcwYIMp5lQhxAAAkrSMRuVKZBQ1CuoXrEclgABAQADAgADeQADNgQ"
+IMAGE_ID_3 = "AgACAgQAAxkBAAM4aJsoNnj8a9JUmD3P5eYQmciUBNYAAv7IMRvNb9hQ4ZG2VZzfKlkBAAMCAAN5AAM2BA"
 
-# إنشاء شبكة النجوم
+IMAGE_3_TEXT = """تذكير 🔴🔴 اعيد و اكرر بنسبة لناس لبغات تشحن حسابها او تسحب ارباحها بدون انتظار لوقت طويل و بدون مشاكل.. كنصحكوم اخوتي بهاد 2 طرق شحن! زر الواتساب و زر تيليغرام راه كينين في طرق الشحن في الموقع الرسمي راه موثوقين من المنصة 1win ✅©️، يكفيك انك تواصل معاهوم و هوما غدي ايجاوبوك فلبلآآآآآآآآص راه عندهوم جميع طرق شحن ، البنوك و الوكالات المغربية.. وحتى العالمية ...... و داكشي لناس لكتبغي لمعقول و سرعة في الشحن و سحب 🫡🫡"""
+
+# شبكة النجوم
 def generate_grid(rows=5, cols=5, stars=4):
     grid = [['🟦' for _ in range(cols)] for _ in range(rows)]
     positions = random.sample([(r, c) for r in range(rows) for c in range(cols)], stars)
@@ -37,7 +39,7 @@ def create_message():
         "[📩 لتواصل](https://t.me/Faridsupp1)"
     )
 
-# إرسال الرسائل
+# إرسال النص
 def send_text(text, parse_mode="Markdown", reply_markup=None):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     data = {
@@ -50,14 +52,21 @@ def send_text(text, parse_mode="Markdown", reply_markup=None):
         data["reply_markup"] = reply_markup
     requests.post(url, json=data)
 
+# إرسال ستيكر
 def send_sticker(sticker_id):
     url = f"https://api.telegram.org/bot{TOKEN}/sendSticker"
     data = {"chat_id": CHANNEL_ID, "sticker": sticker_id}
     requests.post(url, data=data)
 
-def send_photo(photo_id):
+# إرسال صورة (مع أو بدون نص)
+def send_photo(photo_id, caption=None):
     url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
-    data = {"chat_id": CHANNEL_ID, "photo": photo_id}
+    data = {
+        "chat_id": CHANNEL_ID,
+        "photo": photo_id
+    }
+    if caption:
+        data["caption"] = caption
     requests.post(url, data=data)
 
 # الدور الرئيسي
@@ -85,38 +94,38 @@ def send_loop():
 
         time.sleep(5)
 
-        # نشر رسالة العد التنازلي
+        # العد التنازلي
         send_text("3 دقائق لتنتهي الجولة ... ✅")
-        print("⌛ تم نشر رسالة العد التنازلي.")
+        print("⌛ تم نشر العد التنازلي.")
 
         time.sleep(185)  # 3 دقائق و5 ثواني
 
-        # إرسال ستيكر بالتناوب
+        # إرسال ستيكر
         send_sticker(STICKERS[sticker_index])
         sticker_index = (sticker_index + 1) % len(STICKERS)
         print("📎 تم إرسال ستيكر.")
 
         now = time.time()
 
-        # إرسال الصورة الأولى كل 25 دقيقة (1500 ثانية)
+        # صورة 1 كل 25 دقيقة
         if now - last_image_time >= 1500:
             send_photo(IMAGE_ID)
             last_image_time = now
             print("🖼️ تم إرسال الصورة الأولى.")
 
-        # إرسال الصورة الثالثة كل 6 دقائق (360 ثانية) بدون نص
-        if now - last_image3_time >= 360:
-            send_photo(IMAGE_ID_3)
-            last_image3_time = now
-            print("🖼️ تم إرسال الصورة الثالثة بدون نص.")
-
-        # إرسال الصورة الثانية كل 10 دقائق (600 ثانية)
+        # صورة 2 كل 10 دقائق
         if now - last_image2_time >= 600:
             send_photo(IMAGE_ID_2)
             last_image2_time = now
             print("🖼️ تم إرسال الصورة الثانية.")
 
-# إبقاء البوت شغال في Railway
+        # صورة 3 كل 6 دقائق مع نص
+        if now - last_image3_time >= 360:
+            send_photo(IMAGE_ID_3, caption=IMAGE_3_TEXT)
+            last_image3_time = now
+            print("🖼️ تم إرسال الصورة الثالثة مع النص.")
+
+# Flask
 app = Flask('')
 
 @app.route('/')
@@ -129,6 +138,6 @@ def run():
 def keep_alive():
     Thread(target=run).start()
 
-# تشغيل الخادم والبوت
+# تشغيل
 keep_alive()
 send_loop()
