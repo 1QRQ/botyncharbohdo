@@ -27,6 +27,11 @@ IMAGE_3_TEXT = """تذكير 🔴🔴
 
 و داكشي لناس لكتبغي لمعقول و سرعة في الشحن و سحب 🫡🫡"""
 
+# ✅ الصورة الرابعة + النص
+IMAGE_ID_4 = "AgACAgQAAxkBAANMaLo06uZwbM5NgN2KNSQP88k2GYwAAsHFMRvHBtFRW4ppdzQIJ5UBAAMCAAN5AAM2BA"
+IMAGE_4_TEXT = """🏟 ربح من المنشآت، [غروب ديال لكورة 🏟](https://t.me/+6RTQ5jkwSFkwMjA0)
+
+👉 [غروب ديال لكورة 👈](https://t.me/+6RTQ5jkwSFkwMjA0)"""
 
 # شبكة النجوم
 def generate_grid(rows=5, cols=5, stars=4):
@@ -72,7 +77,8 @@ def send_photo(photo_id, caption=None):
     url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
     data = {
         "chat_id": CHANNEL_ID,
-        "photo": photo_id
+        "photo": photo_id,
+        "parse_mode": "Markdown"  # 👈 لدعم الروابط في النص
     }
     if caption:
         data["caption"] = caption
@@ -84,6 +90,7 @@ def send_loop():
     last_image_time = time.time()
     last_image2_time = time.time()
     last_image3_time = time.time()
+    last_image4_time = time.time()  # ✅ جديد
 
     while True:
         send_text("🚨 _جاري ربط خوارزميات موقع 1وين بالقناة_", parse_mode="Markdown")
@@ -134,6 +141,12 @@ def send_loop():
             last_image3_time = now
             print("🖼️ تم إرسال الصورة الثالثة مع النص.")
 
+        # صورة 4 كل 3 ساعات (10800 ثانية) -> 8 مرات في 24 ساعة
+        if now - last_image4_time >= 10800:
+            send_photo(IMAGE_ID_4, caption=IMAGE_4_TEXT)
+            last_image4_time = now
+            print("🖼️ تم إرسال الصورة الرابعة مع النص والرابط.")
+
 # Flask
 app = Flask('')
 
@@ -150,5 +163,3 @@ def keep_alive():
 # تشغيل
 keep_alive()
 send_loop()
-
-
