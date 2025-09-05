@@ -31,7 +31,7 @@ IMAGE_3_TEXT = """تذكير 🔴🔴
 IMAGE_ID_4 = "AgACAgQAAxkBAANMaLo06uZwbM5NgN2KNSQP88k2GYwAAsHFMRvHBtFRW4ppdzQIJ5UBAAMCAAN5AAM2BA"
 IMAGE_4_TEXT = """🏟 ربح من المنشآت، [غروب ديال لكورة 🏟](https://t.me/+6RTQ5jkwSFkwMjA0)
 
-👉 [غروب ديال لكورة 👈](https://t.me/+6RTQ5jkwSFkwMjA0)"""
+👈 [غروب ديال لكورة 👉](https://t.me/+6RTQ5jkwSFkwMjA0)"""
 
 # شبكة النجوم
 def generate_grid(rows=5, cols=5, stars=4):
@@ -163,3 +163,4 @@ def keep_alive():
 # تشغيل
 keep_alive()
 send_loop()
+
